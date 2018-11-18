@@ -13,8 +13,17 @@ app.get('/', function (req, res) {
 
 app.use('/api', api);
 
-// last
+
+// catch thrown error
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status).json({
+    error: err.message,
+    code: -1
+  });
+});
+
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('App server listening on port 3000!');
 });
 
