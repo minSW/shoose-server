@@ -1,11 +1,17 @@
 import api from './routes'; // from routes/index.js
 import express from 'express';
+import session from 'express-session';
 // var express = require('express');
 
 var app = express();
 app.use(express.json()); // for parsing
 app.use(express.static('../public'));
 
+app.use(session({
+    secret: '1234!@#$%^&*1234',
+    resave: false,
+    saveUninitialized: true // no publish new session id
+}));
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
