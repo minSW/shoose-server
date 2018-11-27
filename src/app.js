@@ -1,4 +1,5 @@
 import api from './routes'; // from routes/index.js
+import config from './config';
 import express from 'express';
 import session from 'express-session';
 // var express = require('express');
@@ -8,9 +9,12 @@ app.use(express.json()); // for parsing
 app.use(express.static('../public'));
 
 app.use(session({
-    secret: '1234!@#$%^&*1234',
+    secret: config.secret,
     resave: false,
-    saveUninitialized: true // no publish new session id
+    saveUninitialized: true, // no publish new session id
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 4 // Sessions will be maintained for 4 hours
+    }
 }));
 
 app.get('/', function (req, res) {

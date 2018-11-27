@@ -22,7 +22,6 @@ var user = {
 router.get('/welcome', (req, res) => {
     if (req.session.displayName) {
         res.send('Success login! You are : ' + req.session.displayName);
-       // res.send('Success login!')
     } else {
         res.send('Need to login');
     }
@@ -35,7 +34,7 @@ router.get('/', (req, res)=>{
    // let id = req.params.id; 
    // let pwd = req.params.password;
     if (id === user.id && pwd === user.password) {
-        req.session.displayName = user.id; // temp
+        req.session.displayName = user.id; // temp setting
         res.redirect('/api/login/welcome');
     } else {
         res.send('Fail to login');
