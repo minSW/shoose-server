@@ -1,14 +1,18 @@
 import express from 'express';
 import user from './user';
-import link from './link';
-import login from './session';
+import product from './product';
+import search from './search';
+import recommend from './recommend';
+
+//import login from './session';
 
 const router = express.Router();
 
-router.use('/user', user);
-router.use('/link', link);
-router.use('/login', login);
+router.use('/usr', user);
+router.use('/prod',product);
+router.use('/search',search);
+router.use('/recommend',recommend);
 
-//module.exports = router;
-export default router; // same
+//router.use('/login', login);
 
+export default router;
