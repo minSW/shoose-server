@@ -7,7 +7,6 @@ const router = express.Router();
 /* not yet */
 router.get('/', (req, res) => { // show the single page of product
   let pid = req.query.pid;
-  res.status(200);
   res.send('product part');
   // res.json(..)
 });

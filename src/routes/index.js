@@ -1,9 +1,10 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
+
 import user from './user';
 import product from './product';
 import search from './search';
 import recommend from './recommend';
-import jwt from 'jsonwebtoken';
 import config from '../config';
 
 const router = express.Router();
@@ -27,14 +28,5 @@ function isLoggedIn () {
         return next();
       }
     });
-
-    /*
-    if (req.session.isLogin) {
-      return next();
-    }
-    else {
-      return res.status(400).send('need to login');
-    }
-    */
   }
 }
