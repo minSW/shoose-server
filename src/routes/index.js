@@ -21,9 +21,9 @@ function isLoggedIn () {
     let token = req.cookies.user;
     jwt.verify(token, config.secret, (err) => {
       if (err && err.name === 'TokenExpiredError') {
-        return res.status(400).send('Token Expired');
+        return res.status(404).send('Token Expired');
       } else if (err) {
-        return res.status(500).send('Server Error');
+        return res.status(403).send('Need to Login');
       } else {
         return next();
       }

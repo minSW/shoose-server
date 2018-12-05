@@ -36,6 +36,11 @@ pool.getConnection(function(err,connection){
   }
   connection.release();
 });
+
+pool.on('release', function (connection) {
+  console.log('DB Connection %d released', connection.threadId);
+});
+
 app.set('dbPool', pool);
 
 // catch thrown error
