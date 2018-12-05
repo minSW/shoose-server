@@ -1,16 +1,13 @@
 import express from 'express';
 import request from 'request';
-import bodyParser from 'body-parser';
 import config from '../config';
 
 const router = express.Router();
 
-router.use(bodyParser.urlencoded({extended: true}));
-router.use(bodyParser.json());
-
 /* not yet */
 router.get('/', (req, res) => { // show the single page of product
   let pid = req.query.pid;
+  res.status(200);
   res.send('product part');
   // res.json(..)
 });
@@ -30,7 +27,7 @@ router.post('/wish', (req, res) => {
 /**********/
 
 var getLinkOptions = {
-  url: 'https://openapi.naver.com/v1/search/shop.json',
+  url: config.naver.url,
   headers: {
     'X-Naver-Client-Id': config.naver.id,
     'X-Naver-Client-Secret': config.naver.secret
