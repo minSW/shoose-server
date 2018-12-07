@@ -1,28 +1,47 @@
 import api from './routes'; // from routes/index.js
 import config from './config';
 import express from 'express';
-import session from 'express-session';
-// var express = require('express');
+import mysql from 'mysql';
+
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
 var app = express();
 app.use(express.json()); // for parsing
 app.use(express.static('../public'));
 
-app.use(session({
-  secret: config.secret,
-  resave: false,
-  saveUninitialized: true, // no publish new session id
-  cookie: {
-      maxAge: 1000 * 60 * 60 * 4 // Sessions will be maintained for 4 hours
-  }
-}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
-
+app.use(morgan('dev'));
 app.use('/api', api);
 
+var pool = mysql.createPool({
+  host     : config.mysql.host,
+  user     : config.mysql.user,
+  password : config.mysql.password,
+  database : config.mysql.database,
+  connectionLimit : 20,
+  waitForConnections : false
+});
+
+pool.getConnection(function(err,connection){
+  if(!err) {
+    console.log("Database is connected ... \n");
+  } else {
+    console.log(err);
+    console.log("Error connecting Database .. \n");
+  }
+  connection.release();
+});
+
+pool.on('release', function (connection) {
+  console.log('DB Connection %d released', connection.threadId);
+});
+
+app.set('dbPool', pool);
 
 // catch thrown error
 app.use((err, req, res, next) => {
@@ -31,9 +50,9 @@ app.use((err, req, res, next) => {
     error: err.message,
     code: -1
   });
+  next();
 });
 
 app.listen(3000, function () {
   console.log('App server listening on port 3000!');
 });
-
