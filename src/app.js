@@ -37,6 +37,9 @@ pool.getConnection(function(err,connection){
   connection.release();
 });
 
+pool.on('acquire', function (connection) {
+  console.log('DB Connection %d acquired', connection.threadId)
+})
 pool.on('release', function (connection) {
   console.log('DB Connection %d released', connection.threadId);
 });
@@ -50,7 +53,6 @@ app.use((err, req, res, next) => {
     error: err.message,
     code: -1
   });
-  next();
 });
 
 app.listen(3000, function () {
