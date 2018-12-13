@@ -5,6 +5,8 @@ import user from './user';
 import product from './product';
 import search from './search';
 import recommend from './recommend';
+import profile from './profile';
+import survey from './survey';
 import config from '../config';
 
 const router = express.Router();
@@ -12,6 +14,8 @@ router.use('/usr', user);
 router.use('/prod', isLoggedIn(), product);
 router.use('/search', isLoggedIn(), search);
 router.use('/recommend', isLoggedIn(), recommend);
+router.use('/profile', isLoggedIn(), profile);
+router.use('/survey', isLoggedIn(), survey);
 
 export default router;
 
