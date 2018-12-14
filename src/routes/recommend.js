@@ -75,7 +75,7 @@ router.post('/result', (req, res, next) => {
       }
       
       if (rows.affectedRows === 0) {
-        connection.query('UPDATE preferences SET rate=rate+?*0.5 WHERE SN=? and pid=?', [req.body.score, req.body.SN, req.body.pid], (err, rows, result) => {
+        connection.query('UPDATE preferences SET rate=? WHERE SN=? and pid=?', [req.body.score, req.body.SN, req.body.pid], (err, rows, result) => {
           if(err){
             res.status(500);
             res.json({ message: 'error', result: 'recommend' });

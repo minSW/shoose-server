@@ -72,7 +72,7 @@ router.post('/like', (req, res) => {
           throw err;
         }
         if (rows.affectedRows === 0) { // already exist the preference of the product
-          connection.query('UPDATE preferences SET rate=rate+?*0.5 WHERE SN=? and pid=?', [req.body.score, req.body.SN, req.body.pid], (err, rows, result) => {
+          connection.query('UPDATE preferences SET rate=? WHERE SN=? and pid=?', [req.body.score, req.body.SN, req.body.pid], (err, rows, result) => {
             if (err) {
               connection.release();
               res.status(500);
@@ -140,7 +140,7 @@ router.post('/wish', (req, res) => {
           }
           
           if (rows.affectedRows === 0) {
-            connection.query('UPDATE preferences SET rate=rate+2 WHERE SN=? and pid=?', [req.body.SN, req.body.pid], (err, rows, result) => {
+            connection.query('UPDATE preferences SET rate=rate+1 WHERE SN=? and pid=?', [req.body.SN, req.body.pid], (err, rows, result) => {
               if (err) {
                 connection.release();
                 res.status(500);
@@ -214,7 +214,7 @@ router.get('/link/:pid/:SN', (req, res) => {
       else {
         var shoplink = rows[0].link;
 
-        connection.query(`INSERT INTO preferences (idx,SN,pid,rate) SELECT NULL,?,?,2 FROM DUAL 
+        connection.query(`INSERT INTO preferences (idx,SN,pid,rate) SELECT NULL,?,?,1 FROM DUAL 
         WHERE NOT EXISTS (SELECT * FROM preferences WHERE SN=? and pid=?)`, [req.params.SN, req.params.pid, req.params.SN, req.params.pid], (err, rows, result) => {
           if (err) {
             connection.release();
@@ -223,7 +223,7 @@ router.get('/link/:pid/:SN', (req, res) => {
           }
           
           if (rows.affectedRows == 0) {
-            connection.query('UPDATE preferences SET rate=rate+2 WHERE SN=? and pid=?', [req.params.SN, req.params.pid], (err, rows, result) => {
+            connection.query('UPDATE preferences SET rate=rate+0.5 WHERE SN=? and pid=?', [req.params.SN, req.params.pid], (err, rows, result) => {
               if(err){
                 connection.release();
                 res.status(500).send('Internal Server Error');
